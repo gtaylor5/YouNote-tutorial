@@ -1,54 +1,48 @@
 import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { Grid, TextField } from '@material-ui/core';
-import YouTube from 'react-youtube';
+import AuthForm from './components/auth/AuthForm';
+import { AuthContext } from './components/auth/auth';
+import { BrowserRouter } from 'react-router-dom';
 
 function App() {
 
-  const [videoLink, setVideoLink] = useState("");
-  const [videoTimestamp, setVideoTimestamp] = useState(0);
+  const existingToken = localStorage.getItem("token") || "";
+  const existingUsername = localStorage.getItem("username") || "";
+  const [authToken, setAuthToken] = useState(existingToken);
+  const [username, setUsername] = useState(existingUsername);
 
-  const onChange = (e) => {
-    setVideoLink(e.target.value)
-    console.log(e.target.value);
+  const setUserName = (data) => {
+    if(!data) {
+      localStorage.removeItem('username');
+      setUsername();
+    } else {
+      localStorage.setItem('username', data);
+      setUsername(data);
+    }
   }
 
-  const getVideoId = () => {
-    if(videoLink === "" || videoLink === undefined) return "";
-    // www.youtube.com/watch?v=ID&...
-    let splitVideoLink = videoLink.split("v=")[1]
-    let ampersandLocation = splitVideoLink.indexOf("&");
-    if(ampersandLocation !== -1) {
-      return splitVideoLink.substring(0, ampersandLocation);
+  const setToken = (data) => {
+    if(!data) {
+      localStorage.removeItem('token');
+      setAuthToken();
+    } else {
+      localStorage.setItem('token', JSON.stringify(authToken));
+      setAuthToken(data);
     }
-    return splitVideoLink;
   }
 
   return (
-    <Grid container direction='column' justify='center' alignItems='center'>
-      <Grid item xs={12}>
-        <TextField 
-           value={videoLink}
-           name='videoLink'
-           placeholder='Enter a YouTube URL'
-           variant='outlined'
-           onChange={(e) => onChange(e)}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <YouTube
-          videoId={getVideoId()}
-          opts={{
-            width: '100%',
-            playerVars: {
-              start: parseInt(videoTimestamp)
-            }
-          }}
-        />
-      </Grid>
-    </Grid>
-  );
+    <AuthContext.Provider value={{authToken, setAuthToken: setToken, username, setUserName: setUserName}}>
+      <BrowserRouter>
+        <div className='App'>
+          <AuthForm />
+        </div>
+      </BrowserRouter>
+    </AuthContext.Provider>
+    
+  )
+
 }
 
 export default App;

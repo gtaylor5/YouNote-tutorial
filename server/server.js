@@ -8,7 +8,7 @@ const API_PORT = process.env.PORT || 8080;
 
 app.use(express.json());
 
-const dbPath = ''; // Add MongoDB Path HERE.
+const dbPath = 'mongodb+srv://team_user:teamuser@test-cluster-ekv4m.mongodb.net/'; // Add MongoDB Path HERE.
 
 mongoose.connect(dbPath, {
   dbName: 'you_note',
