@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Grid, Card, Typography, Button, TextField } from '@material-ui/core';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, withRouter, Redirect } from 'react-router-dom';
 import { useAuth } from './auth';
 
 const AuthForm = (props) => {
-  const [username, setUsername] = useState("");
+  const [userName, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [action, setAction] = useState("Sign In");
-  const { setUserName, setAuthToken, user_name } = useAuth();
+  const { setUserName, setAuthToken, username } = useAuth();
 
   const authenticate = async () => {
     const basePath = 'api/auth/'; // server side path
@@ -23,7 +23,7 @@ const AuthForm = (props) => {
     const response = await fetch(url, {
       method: "POST",
       headers: {'content-type': 'application/json'},
-      body: JSON.stringify({username, password})
+      body: JSON.stringify({username: userName, password})
     });
 
     const json = await response.json();
@@ -53,7 +53,7 @@ const AuthForm = (props) => {
     <TextField
       placeholder="Username"
       name='username'
-      value={username}
+      value={userName}
       onChange={(e) => setUsername(e.target.value)} />,
     <TextField
       placeholder="Password"
@@ -69,12 +69,12 @@ const AuthForm = (props) => {
     </Button>
   ]
 
-  if(user_name) {
-    // redirect to the home page
+  if(username) {
+    return <Redirect to="/home" />
   }
 
   return (
-    <Grid container direction='row' item xs={12} justify='center' alignItems='center'>
+    <Grid container direction='row' item xs={12} justify='center' alignItems='center' style={{height: '100%'}}>
       <Grid
         container
         direction='column'

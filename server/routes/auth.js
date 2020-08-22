@@ -53,7 +53,7 @@ router.post("/login", (req, res) => {
       }
 
       jwt.sign({
-        username: newUser.username
+        username: user.username
       }, 'secret', (err, token) => {
         if(err) throw err;
         res.send({

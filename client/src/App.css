@@ -1,5 +1,14 @@
-.App {
+html, body {
+  height: 100vh;
+  background-color: darkgray;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.App, #root {
   text-align: center;
+  height: 100vh;
 }
 
 .App-logo {
