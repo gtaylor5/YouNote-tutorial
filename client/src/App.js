@@ -7,6 +7,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import CustomAppBar from './components/appbar/AppBar';
 import PrivateRoute from './components/route_types/PrivateRoute';
 import HomePage from './components/homepage/Home';
+import NoteApp from './components/note_app/NoteApp';
 
 function App() {
 
@@ -30,7 +31,7 @@ function App() {
       localStorage.removeItem('token');
       setAuthToken();
     } else {
-      localStorage.setItem('token', JSON.stringify(authToken));
+      localStorage.setItem('token', JSON.stringify(data));
       setAuthToken(data);
     }
   }
@@ -45,13 +46,13 @@ function App() {
             <Route exact path="/login" component={AuthForm} />
             <Route exact path="/signup" component={AuthForm} />
             <PrivateRoute exact path="/home" component={HomePage} />
+            <PrivateRoute exact path="/note" component={NoteApp} />
+            <PrivateRoute exact path="/new" component={NoteApp} />
           </Switch>
         </BrowserRouter>
        </div>
     </AuthContext.Provider>
-    
-  )
-
+  );
 }
 
 export default App;
